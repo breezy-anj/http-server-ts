@@ -7,11 +7,8 @@ const server = net.createServer((socket) => {
     const request = data.toString();
     const path = request.split(" ")[1];
 
-    const response =
-      path === "/"
-        ? "HTTP/1.1 200 OK\r\n\r\n"
-        : "HTTP/1.1 404 Not Found\r\n\r\n";
-
+    const str = request.split(" ")[1];
+    const response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\n${str}`;
     socket.write(response);
   });
   socket.on("close", () => {
