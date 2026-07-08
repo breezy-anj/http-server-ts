@@ -7,10 +7,11 @@ const server = net.createServer((socket: net.Socket) => {
     const request = data.toString();
     const path = request.split(" ")[1];
 
-    const str = request.split(" ")[1];
+    const str = path.split("/")[2];
     const strLen = str.length;
     const response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${strLen}\r\n\r\n${str}`;
     socket.write(response);
+    socket.end();
   });
   socket.on("close", () => {
     console.log("Connection Closed");
