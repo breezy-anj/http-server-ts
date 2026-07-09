@@ -38,7 +38,7 @@ const server = net.createServer((socket: net.Socket) => {
       const fileName = path.split("/")[2];
       let content, size;
       try {
-        fs.readFile(`./${fileName}`, "utf8", (data) => {
+        fs.readFile(`/${fileName}`, "utf8", (data) => {
           content = data;
           size = data.length;
           socket.write(
