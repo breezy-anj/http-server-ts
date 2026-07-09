@@ -1,4 +1,5 @@
 import * as net from "net";
+import * as fs from "fs";
 
 console.log("Logs from your program will appear here!");
 
@@ -33,6 +34,22 @@ const server = net.createServer((socket: net.Socket) => {
       const response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgentValue.length}\r\n\r\n${userAgentValue}`;
       socket.write(response);
       socket.end();
+    } else if (path.startsWith("/files/")) {
+      const fileName = path.split("/")[2];
+      let content, size;
+      try {
+        fs.readFile(`./${fileName}`, "utf8", (data) => {
+          content = data;
+          size = data.length;
+          socket.write(
+            `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${size}\r\n\r\n${content}`,
+          );
+        });
+      } catch (error) {
+        console.log(error);
+        socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+        socket.end();
+      }
     } else {
       socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
       socket.end();
