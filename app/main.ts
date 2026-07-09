@@ -10,7 +10,7 @@ const server = net.createServer((socket: net.Socket) => {
     if (path === "/") {
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
       socket.end();
-    } else if (path.startsWith("/user-agent/")) {
+    } else if (path.startsWith("/user-agent")) {
       const [headerArea] = request.split("\r\n\r\n");
       const lines = headerArea.split("\r\n");
       let contentLength, value, header;
