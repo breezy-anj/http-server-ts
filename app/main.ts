@@ -11,18 +11,20 @@ const server = net.createServer((socket: net.Socket) => {
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
       socket.end();
     } else if (path.startsWith("/user-agent")) {
-      const [headerArea] = request.split("\r\n\r\n");
-      const lines = headerArea.split("\r\n");
-      let contentLength, value, header;
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (line.trim().toLowerCase().includes("user-agent")) {
-          header = line.split(":")[1];
-          contentLength = header.length;
-          value = header.split("/")[1];
+      const [part] = request.split("\r\n\r\n");
+      const lines = part.split("\r\n");
+      let userAgentValue = "";
+
+      for (let i = 1; i < lines.length; i++) {
+        const [key, ...valueParts] = lines[i].split(":");
+
+        if (key.trim().toLowerCase() === "user-agent") {
+          userAgentValue = valueParts.join(":").trim();
+          break;
         }
       }
-      const response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${contentLength}\r\n\r\nfoobar/${value}`;
+
+      const response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgentValue.length}\r\n\r\n${userAgentValue}`;
       socket.write(response);
       socket.end();
     } else {
