@@ -35,3 +35,15 @@ Note: This section is for stages 2 and beyond.
    `app/main.ts`.
 1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
    output will be streamed to your terminal.
+
+## Current Progress
+
+Based on the implementation in `app/main.ts`, the following HTTP server challenges have been solved so far:
+
+- **Stage 1 & 2: Setup & Basic Response:** Binds to a TCP port and responds with HTTP `200 OK` for the root path `/`.
+- **Stage 3: 404 Not Found:** Handles unknown routes by returning a `404 Not Found` status.
+- **Stage 4: Respond with Body:** Parses the `/echo/{str}` endpoint and responds with the requested string and correct `Content-Length`.
+- **Stage 5: Read Headers:** Parses HTTP headers to extract the `User-Agent` and returns it from the `/user-agent` endpoint.
+- **Stage 6: Serve Files:** Parses command-line arguments to accept a `--directory` flag, and serves files dynamically from the `/files/{filename}` endpoint using `fs.readFileSync`.
+
+Keep it up!
