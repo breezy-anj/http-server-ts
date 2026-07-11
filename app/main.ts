@@ -61,14 +61,13 @@ const server = net.createServer((socket: net.Socket) => {
       const requestParts = request.split("\r\n\r\n");
       const requestBody = requestParts.at(-1);
       const content = requestParts.at(-2);
-      const contentLength = content.trim().split(":").at(-1);
 
       if (path.startsWith("/files/")) {
         const fileName = path.split("/")[2];
         const filePath = `${directory}${fileName}`;
 
         try {
-          fs.writeFileSync(`${filePath}\${fileName}`, requestBody);
+          fs.writeFileSync(`${filePath}/${fileName}`, requestBody);
         } catch (err) {
           console.log(err);
         }
