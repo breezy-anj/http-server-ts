@@ -3,11 +3,14 @@ import * as fs from "fs";
 
 console.log("Logs from your program will appear here!");
 
+//NEW accessing the command string through process.argv
+const dirArgIndex = process.argv.indexOf("--directory");
+const directory = dirArgIndex !== -1 ? process.argv[dirArgIndex + 1] : "";
+
 const server = net.createServer((socket: net.Socket) => {
   socket.on("data", (data: Buffer) => {
     const request = data.toString();
     const path = request.split(" ")[1];
-
     if (path === "/") {
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
       socket.end();
@@ -36,17 +39,15 @@ const server = net.createServer((socket: net.Socket) => {
       socket.end();
     } else if (path.startsWith("/files/")) {
       const fileName = path.split("/")[2];
-      let content, size;
+      const filePath = `${directory}${fileName}`;
+
       try {
-        fs.readFile(`/${fileName}`, "utf8", (data) => {
-          content = data;
-          size = data.length;
-          socket.write(
-            `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${size}\r\n\r\n${content}`,
-          );
-        });
+        const content = fs.readFileSync(filePath, "utf8");
+        const response = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
+
+        socket.write(response);
+        socket.end();
       } catch (error) {
-        console.log(error);
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
         socket.end();
       }
