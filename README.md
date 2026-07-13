@@ -46,4 +46,4 @@ Based on the implementation in `app/main.ts`, the following HTTP server challeng
 - **Stage 5: Read Headers:** Parses HTTP headers to extract the `User-Agent` and returns it from the `/user-agent` endpoint.
 - **Stage 6: Serve Files:** Parses command-line arguments to accept a `--directory` flag, and serves files dynamically from the `/files/{filename}` endpoint using `fs.readFileSync`.
 
-Keep it up!
+**I have successfully completed the challenge!**
